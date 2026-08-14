@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Frequency Circuit & Information Density Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Lato:wght@400;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #0f172a;
+            color: #1e293b;
+        }
+        .font-heading { font-family: 'Poppins', sans-serif; }
+        .font-mono-code { font-family: 'JetBrains Mono', monospace; }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #ffffff;
+        }
+        .wire-active {
+            stroke: #e30613;
+            stroke-dasharray: 8, 4;
+            animation: dashFlow 0.3s linear infinite;
+        }
+        .wire-inactive {
+            stroke: #cbd5e1;
+        }
+        @keyframes dashFlow {
+            to { stroke-dashoffset: -12; }
+        }
+        .lamp-glow {
+            filter: drop-shadow(0px 0px 14px rgba(227, 6, 19, 0.85));
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen select-none">
+
+    <div class="slide-container rounded-xl shadow-2xl p-8 flex flex-col justify-between border border-slate-200">
+        <header class="flex justify-between items-center border-b border-slate-200 pb-4">
+            <div>
+                <span class="text-xs font-bold text-[#e30613] tracking-widest uppercase font-heading">Edge AI & Financial Markets</span>
+                <h1 class="text-2xl font-bold text-[#1e293b] font-heading mt-0.5">High-Frequency Hardware Switching & Information Throughput</h1>
+            </div>
+            <div class="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-lg border border-slate-200">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-[#e30613] animate-pulse"></span>
+                    <span class="text-xs text-slate-500 font-bold uppercase">Switching Rate:</span>
+                </div>
+                <span id="freqReadout" class="font-mono-code text-xl font-bold text-[#e30613]">5.0 Hz</span>
+            </div>
+        </header>
+
+        <main class="grid grid-cols-12 gap-6 items-center my-auto">
+            
+            <div class="col-span-5 bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col items-center">
+                <div class="w-full flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 font-heading">Schematic Circuit ($S_1$)</span>
+                    <span id="stateBadge" class="font-mono-code text-xs font-bold px-2.5 py-1 rounded bg-slate-200 text-slate-700">0 (OFF)</span>
+                </div>
+                
+                <svg width="360" height="240" viewBox="0 0 360 240" class="overflow-visible">
+                    <!-- Base Wire Loop -->
+                    <path id="circuitWire" d="M 50 120 L 50 40 L 150 40 M 230 40 L 310 40 L 310 200 L 50 200 L 50 120" 
+                          fill="none" stroke-width="3.5" class="wire-inactive"/>
+
+                    <!-- DC Power Source (12V) -->
+                    <g transform="translate(50, 120)">
+                        <line x1="-15" y1="-10" x2="15" y2="-10" stroke="#1e293b" stroke-width="3"/>
+                        <line x1="-28" y1="10" x2="28" y2="10" stroke="#1e293b" stroke-width="4"/>
+                        <text x="-40" y="-5" class="font-mono-code text-xs font-bold" fill="#1e293b">+12V</text>
+                    </g>
+
+                    <!-- Resistor R1 (330 Ohm) -->
+                    <g transform="translate(190, 40)">
+                        <rect x="-28" y="-12" width="56" height="24" fill="#ffffff" stroke="#1e293b" stroke-width="2" rx="4"/>
+                        <text x="0" y="4" text-anchor="middle" class="font-mono-code text-xs font-bold" fill="#1e293b">330Ω</text>
+                    </g>
+
+                    <!-- SPST Switch S1 -->
+                    <g transform="translate(130, 40)">
+                        <circle cx="0" cy="0" r="4" fill="#1e293b"/>
+                        <circle cx="28" cy="0" r="4" fill="#1e293b"/>
+                        <line id="switchArm" x1="0" y1="0" x2="26" y2="-16" stroke="#e30613" stroke-width="4" stroke-linecap="round"/>
+                        <text x="14" y="-20" text-anchor="middle" class="font-mono-code text-xs font-bold" fill="#64748b">S1</text>
+                    </g>
+
+                    <!-- Load Indicator Node L1 -->
+                    <g transform="translate(310, 120)">
+                        <circle id="lampNode" cx="0" cy="0" r="20" fill="#ffffff" stroke="#1e293b" stroke-width="3"/>
+                        <line x1="-10" y1="-10" x2="10" y2="10" stroke="#1e293b" stroke-width="2"/>
+                        <line x1="10" y1="-10" x2="-10" y2="10" stroke="#1e293b" stroke-width="2"/>
+                        <text x="32" y="4" class="font-mono-code text-xs font-bold" fill="#1e293b">L1</text>
+                    </g>
+                </svg>
+
+                <div class="w-full mt-3 bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-500 font-heading">Data Throughput:</span>
+                    <span id="throughputReadout" class="font-mono-code text-xs font-bold text-[#e30613]">1.28 kbps</span>
+                </div>
+            </div>
+
+            <div class="col-span-7 bg-slate-50 rounded-xl p-5 border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 font-heading">Switch State vs. Time (High-Frequency Compression)</span>
+                    <span class="text-[11px] font-mono-code text-slate-400">Digital State ($0 \rightarrow 1$)</span>
+                </div>
+
+                <div class="bg-white rounded-lg p-2 border border-slate-200 relative">
+                    <canvas id="waveformCanvas" width="600" height="200" class="w-full h-[200px]"></canvas>
+                </div>
+
+                <!-- Controls & Slider -->
+                <div class="mt-4 flex items-center gap-4 bg-white p-3 rounded-lg border border-slate-200">
+                    <button id="btnPause" class="bg-[#e30613] hover:bg-red-700 text-white font-heading font-bold text-xs uppercase px-4 py-2 rounded-lg transition shadow-sm">
+                        Pause Sweep
+                    </button>
+                    <div class="flex-1 flex items-center gap-3">
+                        <span class="text-xs font-bold text-slate-600 font-heading">FREQ:</span>
+                        <input id="freqSlider" type="range" min="1" max="40" value="5" step="1" class="w-full accent-[#e30613] cursor-pointer">
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="flex justify-between items-center border-t border-slate-200 pt-3 text-xs text-slate-400 font-mono-code">
+            <span>REMONDIS Corporate Tech System — Information Density & Switching Simulation</span>
+            <span>Slide 15</span>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('waveformCanvas');
+        const ctx = canvas.getContext('2d');
+        const freqSlider = document.getElementById('freqSlider');
+        const freqReadout = document.getElementById('freqReadout');
+        const stateBadge = document.getElementById('stateBadge');
+        const switchArm = document.getElementById('switchArm');
+        const circuitWire = document.getElementById('circuitWire');
+        const lampNode = document.getElementById('lampNode');
+        const throughputReadout = document.getElementById('throughputReadout');
+        const btnPause = document.getElementById('btnPause');
+
+        let isRunning = true;
+        let time = 0;
+        const history = [];
+        const maxPoints = 350;
+
+        btnPause.addEventListener('click', () => {
+            isRunning = !isRunning;
+            btnPause.innerText = isRunning ? 'Pause Sweep' : 'Resume Sweep';
+            btnPause.className = isRunning ? 
+                'bg-[#e30613] hover:bg-red-700 text-white font-heading font-bold text-xs uppercase px-4 py-2 rounded-lg transition shadow-sm' :
+                'bg-slate-700 hover:bg-slate-800 text-white font-heading font-bold text-xs uppercase px-4 py-2 rounded-lg transition shadow-sm';
+        });
+
+        function animateLoop() {
+            if (isRunning) {
+                const freq = parseFloat(freqSlider.value);
+                freqReadout.innerText = freq.toFixed(0) + ' Hz';
+
+                // Calculate information throughput where the switch state itself is the information (1 bit per cycle/state)
+                const throughputBps = freq; 
+                if (throughputBps >= 1000) {
+                    throughputReadout.innerText = (throughputBps / 1000).toFixed(2) + ' kbps (Active)';
+                } else {
+                    throughputReadout.innerText = throughputBps.toFixed(1) + ' bps (Active)';
+                }
+
+                // Advance time based on frequency
+                time += 0.04 * (freq / 5);
+                const currentState = Math.sin(time * Math.PI) > 0 ? 1 : 0;
+
+                // Update Circuit Schematic Visuals
+                if (currentState === 1) {
+                    switchArm.setAttribute('y2', '0');
+                    circuitWire.className.baseVal = 'wire-active';
+                    lampNode.setAttribute('fill', '#e30613');
+                    lampNode.classList.add('lamp-glow');
+                    stateBadge.innerText = '1 (CLOSED / ON)';
+                    stateBadge.className = 'font-mono-code text-xs font-bold px-2.5 py-1 rounded bg-red-100 text-[#e30613]';
+                } else {
+                    switchArm.setAttribute('y2', '-16');
+                    circuitWire.className.baseVal = 'wire-inactive';
+                    lampNode.setAttribute('fill', '#ffffff');
+                    lampNode.classList.remove('lamp-glow');
+                    stateBadge.innerText = '0 (OPEN / OFF)';
+                    stateBadge.className = 'font-mono-code text-xs font-bold px-2.5 py-1 rounded bg-slate-200 text-slate-700';
+                    throughputReadout.innerText = '0.0 bps (Idle)';
+                }
+
+                // Push state history for waveform
+                history.push(currentState);
+                if (history.length > maxPoints) history.shift();
+            }
+
+            // Render Oscilloscope Graph
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Grid Lines
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            for (let y = 40; y < canvas.height; y += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Axis labels
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px JetBrains Mono';
+            ctx.fillText('HIGH (1)', 10, 32);
+            ctx.fillText('LOW (0)', 10, 162);
+
+            // Draw Digital Square Waveform Trace
+            if (history.length > 1) {
+                ctx.beginPath();
+                ctx.strokeStyle = '#e30613';
+                ctx.lineWidth = 2.5;
+
+                const step = canvas.width / maxPoints;
+                for (let i = 0; i < history.length; i++) {
+                    const x = i * step;
+                    const y = history[i] === 1 ? 40 : 160;
+
+                    if (i === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        const prevY = history[i - 1] === 1 ? 40 : 160;
+                        ctx.lineTo(x, prevY); // Vertical transition edge
+                        ctx.lineTo(x, y);     // Horizontal state run
+                    }
+                }
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(animateLoop);
+        }
+
+        // Start animation loop on window load
+        window.onload = function() {
+            animateLoop();
+        };
+    </script>
+</body>
+</html>
